@@ -1,96 +1,109 @@
-#include <iostream>
-#include <string>
+#include<iostream>
+#include<vector>
+#include<string>
+
 using namespace std;
-class Person {
-protected:
+
+class person
+{
+protected :
+
     string name;
     int age;
-public:
-    Person(string n = "", int a = 0) : name(n), age(a) {}
-    void displayPerson() {
-        cout << "Name: " << name << ", Age: " << age << endl;
-    }
-};
-class Employee : public Person {
-protected:
-    int employeeId;
-public:
-    Employee(string n = "", int a = 0, int id = 0)
-        : Person(n, a), employeeId(id) {}
-    void displayEmployee() {
-        displayPerson();
-        cout << "Employee ID: " << employeeId << endl;
-    }
-};
-class Manager : public Employee {
-private:
-    string department;
-public:
-    Manager(string n = "", int a = 0, int id = 0, string dept = "")
-        : Employee(n, a, id), department(dept) {}
 
-    void displayManager() {
-        displayEmployee();
+public :
+
+    person (string n, int a)
+{
+    name=n;
+    age=a;
+
+}
+
+  void display_person()
+  {
+      cout<<endl<<"name : "<<name<<" , age :"<<age;
+  }
+};
+
+
+class emp : public person
+
+{
+    protected:
+
+    int id;
+
+public:
+    emp(string n, int a, int i) : person(n, a)
+    {
+        id = i;
+    }
+
+    void display_employee()
+     {
+        display_person();
+        cout << " Employee ID: " << id << endl;
+    }
+
+
+};
+
+class manager : public emp
+{
+protected :
+
+    string department;
+
+public :
+
+    manager(string n, int a, int i,string dep):emp(n,a,i)
+    {
+        department=dep;
+    }
+
+    void display_manager()
+    {
+        display_employee();
         cout << "Department: " << department << endl;
     }
 };
-class ManagerStorage {
-private:
-    Manager managers[10];
-    int count;
-public:
-    ManagerStorage() : count(0) {}
 
-    void addManager(Manager m) {
-        if (count < 10) {
-            managers[count++] = m;
-        } else {
-            cout << "Cannot add more managers. Storage is full.\n";
-        }
-    }
 
-    void showAllManagers() {
-        for (int i = 0; i < count; i++) {
-            cout << "\nManager " << i + 1 << " Details:\n";
-            managers[i].displayManager();
-        }
-    }
-};
+int main()
+{
+ vector<manager> managers;
+    int n;
 
-int main() {
-    ManagerStorage store;
-    int num;
+    cout << "Enter the number of managers: ";
+    cin >> n;
 
-    cout << "Enter number of managers to add (max 10): ";
-    cin >> num;
-    cin.ignore();
-
-    if (num > 10) {
-        cout << "Only up to 10 managers allowed.\n";
-        num = 10;
-    }
-
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < n; ++i) {
         string name, department;
         int age, id;
 
         cout << "\nEnter details for Manager " << i + 1 << ":\n";
-        cout << "Name: ";
-        getline(cin, name);
+
+        cout << "Name : ";
+        cin >> name;
+
         cout << "Age: ";
         cin >> age;
+
         cout << "Employee ID: ";
         cin >> id;
-        cin.ignore();
-        cout << "Department: ";
-        getline(cin, department);
 
-        Manager m(name, age, id, department);
-        store.addManager(m);
+        cout << "Department : ";
+        cin >> department;
+
+        
+        managers.push_back(manager(name, age, id, department));
     }
-
-    cout << "\n--- All Manager Details ---\n";
-    store.showAllManagers();
+    cout << "\n--- Manager Details ---\n";
+    for (size_t i = 0; i < managers.size(); ++i) {
+        cout << "\nManager " << i + 1 << ":\n";
+        managers[i].display_manager();
+    }
 
     return 0;
 }
